@@ -7,19 +7,16 @@ export default function BookingScreen(){
 
     const timeSlots = generateTimeSlots();    //defaut 8H-16H30
 
-    const renderItem = ({item}) =>(
-        <TouchableOpacity style={styles.slot}>
-            <Text style={styles.slotText}>{item.start} - {item.end}</Text>
-        </TouchableOpacity>
-    );
-
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView >
             <Text style={styles.title}>Créneaux disponibles</Text>
-            <FlatList data={timeSlots} 
-                keyExtractor={(item, index) => index.toString()} 
-                renderItem={renderItem} contentContainerStyle={styles.list}
-            />
+
+            {timeSlots.map((slot, index) =>(
+
+                <TouchableOpacity key={index}>
+                <Text >{slot.startTime} - {slot.endTime}</Text>
+                </TouchableOpacity>
+            ))}
         </SafeAreaView>
     );
     

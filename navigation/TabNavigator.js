@@ -35,8 +35,6 @@ const MyTab = () =>{
                 fontStyle: 'normal',
             },
             headerTitleAlign: 'center',
-
-
                 
         })}>
             <Tab.Screen name="Accueil" component={HomeScreen} options={{title: 'Accueil'}} />
