@@ -18,13 +18,24 @@ export default function AppNavigator() {
     return (
         <GestureHandlerRootView>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Accueil">
+                <Stack.Navigator initialRouteName="Accueil" 
+                    screenOptions = {{
+                        headerStyle: {backgroundColor: '#4a90e2'},
+                        headerTitleStyle:{
+                            fontWeight: 'bold',
+                            fontSize: 30,
+                            fontStyle: 'normal',
+                        },
+
+                        headerTitleAlign: 'center',
+                    }}
+                >
                     <Stack.Screen name="Splash" component={SplashScreen} options={{title: "Welcome to the TapSlot"}}/>
                     <Stack.Screen name="Accueil" component={MyTab} options={{headerShown: false}}/>
-                    <Stack.Screen name="Login" component={LoginScreen} />
-                    <Stack.Screen name="Register" component={RegisterScreen} />
-                    <Stack.Screen name="Booking" component={BookingScreen} options={{title:'Prendre un rendez-vous'}}/>
-                    <Stack.Screen name="Appointments" component={AppointmentsScreen}/>
+                    <Stack.Screen name="Login" component={LoginScreen} options={{title:'Connexion'}} />
+                    <Stack.Screen name="Register" component={RegisterScreen} options={{title:'Inscription'}}/>
+                    <Stack.Screen name="Booking" component={BookingScreen} options={{title:'Reservez'}} />
+                    <Stack.Screen name="Appointments" component={AppointmentsScreen} options={{title:'Rendez-vous'}}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </GestureHandlerRootView>

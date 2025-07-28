@@ -30,12 +30,12 @@ const HomeScreen = () =>{
                 <Text >Statut : {services.prestataire}</Text>
                 <Text >Statut : {services.statut}</Text>
 
-                <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Booking')}>
+                <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Appointments')}>
                     <Text style={styles.linkText}>Voir tous les rendez-vous</Text>
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.mainButton} onPress={() => navigation.navigate('Appointments')}>
+            <TouchableOpacity style={styles.mainButton} onPress={() => navigation.navigate('Booking')}>
                 <Text style={styles.mainButtonText}>+ Prendre un rendez-vous</Text>
             </TouchableOpacity>
 

@@ -4,7 +4,6 @@ import HomeScreen from '../screens/HomeScreen';
 import AppointmentsScreen from '../screens/AppointmentsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { Ionicons } from '@expo/vector-icons';
-import BookingScreen from '../screens/BookingScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,10 +28,19 @@ const MyTab = () =>{
             //headerShown: false,
             tabBarActiveTintColor: '#4a90e2',
             tabBarInactiveTintColor: 'gray',
+            headerStyle: {backgroundColor: '#4a90e2'},
+            headerTitleStyle:{
+                fontWeight: 'bold',
+                fontSize: 30,
+                fontStyle: 'normal',
+            },
+            headerTitleAlign: 'center',
+
+
                 
         })}>
-            <Tab.Screen name="Accueil" component={HomeScreen} options={{title: 'Accueil'}}/>
-            <Tab.Screen name="Rendez-vous" component={BookingScreen} options={{title: 'Rendez-vous'}}/>
+            <Tab.Screen name="Accueil" component={HomeScreen} options={{title: 'Accueil'}} />
+            <Tab.Screen name="Rendez-vous" component={AppointmentsScreen} options={{title: 'Rendez-vous'}}/>
             <Tab.Screen name="Profil" component={ProfileScreen} options={{title: 'Profil'}} />
         </Tab.Navigator>
     );
