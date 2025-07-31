@@ -18,7 +18,7 @@ export default function AppNavigator() {
     return (
         <GestureHandlerRootView>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Accueil" 
+                <Stack.Navigator initialRouteName="Login" 
                     screenOptions = {{
                         headerStyle: {backgroundColor: '#4a90e2'},
                         headerTitleStyle:{

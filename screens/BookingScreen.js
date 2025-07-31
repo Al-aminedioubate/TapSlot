@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, Text, StyleSheet, Button, SafeAreaView,TouchableOpacity } from "react-native";
 
 import { generateTimeSlots } from "../helpers/timeSlots";
@@ -19,7 +21,6 @@ export default function BookingScreen(){
             ))}
         </SafeAreaView>
     );
-    
 }
 
 const styles = StyleSheet.create({

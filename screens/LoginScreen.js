@@ -1,24 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { View, Text, StyleSheet, Button, SafeAreaView, Alert, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button, SafeAreaView, Alert, TextInput, TouchableOpacity, Dimensions} from "react-native";
 
-const LoginScreen = () => {
-
-    const navigation = useNavigation();
+const LoginScreen = ({navigation}) => {
+    
+    //const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () =>{
+    const handleLogin = async () =>{
         if(email.trim() || !password.trim()){
-            Alert.alert("Champs requis", " Veuillez remplir tous les champs");
-            return;
+           return Alert.alert("Champs requis", " Veuillez remplir tous les champs");
         }
+
+        try{
+            await signInWithEmailAndPassword(auth, email, password);
+            console.log("Utilisateur connecte");
+            navigation.replace("Accueil");
+
+        }catch(error){
+            console.error("Erreur de connexion:", error.message);
+            Alert.alert("Échec de connexion", error.message);
+        }
+
+        console.log("Button bien cliquer");
     }
 
-    //Logique de firebase ici a venir
-    //Alert.alert("Connexion reussie", `Email: ${email}`);
-    
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Connexion</Text>
@@ -40,7 +49,7 @@ const LoginScreen = () => {
                 style={styles.input}
             /> 
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Accueil")}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.btnText}>Se connecter</Text>
             </TouchableOpacity> 
 
@@ -53,10 +62,11 @@ const LoginScreen = () => {
 
         </SafeAreaView>
     );
- 
 };
 
 export default LoginScreen;
+
+const { windowWidth, windowHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container:{
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     title:{
-        fontSize: 28,
+        fontSize: windowWidth * 0.08,
         fontWeight: "bold",
         marginBottom: 32,
         textAlign: 'center',

@@ -1,45 +1,53 @@
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { View, Text, StyleSheet, Button, SafeAreaView, Alert, TextInput, TouchableOpacity } from "react-native";
+import React, { useState} from "react";
+import { View, Text, StyleSheet, Button, SafeAreaView, Alert, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 
-const  RegisterScreen = () =>{
+import {auth} from '../firebaseConfig';
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-    const navigation = useNavigation();
+const  RegisterScreen = ({navigation}) =>{
 
-    const [nomComplet, setNomComplet] = useState('');
+    //const navigation = useNavigation();
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleRegister = () => {
-        if(!nomComplet || !email || !password || !confirmPassword){
-            Alert.alert("Erreur", "Veuillez remplir tout les champs");
+    const handleRegister = async () => {
+        if(!fullName || !email || !password || !confirmPassword){
+            Alert.alert("Oopps! Erreur", "Tous les champs sont requis.");
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(emailRegex.test(email)){
-            Alert.alert('Erreur, Email est invalide');
-            return;
+        if(password !== confirmPassword){
+           return Alert.alert("Erreur", "Les mots de passe ne correspondent pas.");
         }
 
-        if (password.length < 6 && confirmPassword.length < 6) {
-            Alert.alert('Erreur', 'Mot de passe trop court (min. 6 caractères).');
-            return;
-        }
+        //Gestion d'erreurs
+        try{
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-        Alert.alert('Votre inscription a ete effectuer avec succes!');
+            //Option permetant d'ajouter le nom complet de l'utilisateur dans la BD firebase
+            await updateProfile(userCredential.user, {
+                displayName: fullName,
+            });
+
+            //Apres le succes de l'inscription on redirige le client a la page de connexion pour se connecter.
+            Alert.alert("Succes", "Inscription reussie !");
+            navigation.navigate("Login");
+
+        }catch (error){
+            Alert.alert("Erreur Firebase", error.message);
+            console.log("erreur", error.message);
+        }
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Inscription</Text>
 
             <TextInput 
                 placeholder="Nom Complet"
-                value={nomComplet}
-                onChange={setNomComplet}
-                keyboardType="Text"
+                value={fullName}
+                onChange={setFullName}
                 style={styles.input}
             />
 
@@ -61,18 +69,20 @@ const  RegisterScreen = () =>{
             /> 
 
             <TextInput 
-                placeholder="Confirmer mot de passe"
-                value={password}
+                placeholder="Confirmer le mot de passe"
+                value={confirmPassword}
                 onChange={setConfirmPassword}
                 secureTextEntry
                 style={styles.input}
             /> 
 
-            <View>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}> 
-                    <Text style={styles.btnText} >S'inscrire</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.button} onPress={handleRegister} >
+                <Text style={styles.btnText}>S'inscrire</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.loginText} onPress={() => navigation.navigate("Login")}>
+                Déjà un compte ? Connecte-toi
+            </Text>
         </SafeAreaView>
     )
 }
@@ -110,5 +120,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontWeight: '600',
+    },
+    loginText: {
+        textAlign: "center",
+        marginTop: 15,
+        color: '#4a90e2',
     },
 })
